@@ -1,1 +1,1 @@
-my first project of Django under Alx
+my first project of Django under ALX
