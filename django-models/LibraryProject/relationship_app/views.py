@@ -4,6 +4,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect, render
 from django.views import View
+from django.contrib.auth import login
 
 class RegisterView(View):
     def get(self, request):
