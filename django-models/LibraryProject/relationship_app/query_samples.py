@@ -14,7 +14,7 @@ def books_by_author(author_name):
 def books_in_library(library_name):
     try:
         library = Library.objects.get(name=library_name)
-        books = Librarian.objects.get(library = )
+        books =  library.books.all()
         print(f"Books in {library.name}: {[book.title for book in books]}")
     except Library.DoesNotExist:
         print("Library not found.")
