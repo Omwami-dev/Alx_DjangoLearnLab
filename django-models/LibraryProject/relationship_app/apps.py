@@ -6,14 +6,8 @@ class RelationshipAppConfig(AppConfig):
     name = 'relationship_app'
 
 def ready(self):
-    import relationship_app.signals
+        # Only import signals if needed
+        pass
+        # import relationship_app.signals
 
-from django.urls import path
-from . import admin_view, librarian_view, member_view
-
-urlpatterns = [
-    path('admin-dashboard/', admin_view.admin_view, name='admin_view'),
-    path('librarian-dashboard/', librarian_view.librarian_view, name='librarian_view'),
-    path('member-dashboard/', member_view.member_view, name='member_view'),
-]
 
