@@ -40,8 +40,10 @@ SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
+
 # Optional: Force all requests to be HTTPS (if behind HTTPS proxy/load balancer)
 SECURE_SSL_REDIRECT = True  # Only enable this if you're serving over HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
 
