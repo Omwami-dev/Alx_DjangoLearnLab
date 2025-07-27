@@ -4,6 +4,12 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from .models import Book
+from django.db.models import Q
+
+def search_books(request):
+    query = request.GET.get('q', '')
+    books = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query))
+    return render(request, 'bookshelf/book_list.html', {'books': books, 'query': query})
 
 # View: Only users with 'can_view' can access this list
 @permission_required('bookshelf.can_view', raise_exception=True)
@@ -46,7 +52,15 @@ User = get_user_model()
 
 def user_books(request):
     books = Book.objects.filter(user=request.user)
-    ...
+    def book_create(request):
+    if request.method == 'POST':
+        title = request.POST.get('title', '').strip()
+        author = request.POST.get('author', '').strip()
+        if title and author:
+            Book.objects.create(title=title, author=author)
+            return redirect('book_list')
+    return render(request, 'bookshelf/book_form.html')
+
 
 
 

@@ -10,8 +10,9 @@
     <h1>Register</h1>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Register</button>
+       <label>Title:</label><input type="text" name="title"><br>
+     <label>Author:</label><input type="text" name="author"><br>
+        <button type="submit">"Register"</button>
     </form>
 </body>
 </html>
