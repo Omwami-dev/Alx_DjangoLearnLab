@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from .models import Book
 from django.db.models import Q
+from .forms import ExampleForm
 
 def search_books(request):
     query = request.GET.get('q', '')
@@ -25,7 +26,11 @@ def book_create(request):
         author = request.POST.get('author')
         Book.objects.create(title=title, author=author)
         return redirect('book_list')
-    return render(request, 'bookshelf/book_form.html')
+        return render(request, 'bookshelf/book_form.html')
+    else:
+        form = ExampleForm()
+    return render(request, 'bookshelf/book_form.html', {'form': form})
+
 
 # View: Only users with 'can_edit' can edit a book
 @permission_required('bookshelf.can_edit', raise_exception=True)
@@ -36,7 +41,9 @@ def book_edit(request, pk):
         book.author = request.POST.get('author')
         book.save()
         return redirect('book_list')
-    return render(request, 'bookshelf/book_form.html', {'book': book})
+    else:
+        form = ExampleForm(instance=book)
+    return render(request, 'bookshelf/book_form.html', {'form': form})
 
 # View: Only users with 'can_delete' can delete a book
 @permission_required('bookshelf.can_delete', raise_exception=True)
