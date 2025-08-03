@@ -60,7 +60,7 @@ User = get_user_model()
 def user_books(request):
     books = Book.objects.filter(user=request.user)
     def book_create(request):
-    if request.method == 'POST':
+     if request.method == 'POST':
         title = request.POST.get('title', '').strip()
         author = request.POST.get('author', '').strip()
         if title and author:
