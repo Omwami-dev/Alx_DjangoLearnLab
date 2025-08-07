@@ -7,10 +7,6 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveAPIView
 
 
-from rest_framework import generics, permissions
-from .models import Book
-from .serializers import BookSerializer
-
 # GET: List all books
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
@@ -40,3 +36,25 @@ class BookDeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+class BookListCreateView(ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+class BookDetailView(RetrieveAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+class BookUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        ...
+
+class BookDeleteView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        ...
