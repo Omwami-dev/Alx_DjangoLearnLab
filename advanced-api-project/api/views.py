@@ -2,11 +2,12 @@ from django.shortcuts import render
 from rest_framework import generics, permissions
 from .models import Book
 from .serializers import BookSerializer
+from rest_framework.permissions import IsAuthenticatedOrReadOnly , IsAuthenticated
 
 class BookListView(generics.ListAPIView): # Purpose: Returns a list of all book records.
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.AllowAny] # Permissions: Open to all users (unauthenticated allowed).
+    permission_classes = [IsAuthenticatedOrReadOnly] # Permissions: Open to all users (unauthenticated allowed).
 
 class BookDetailView(generics.RetrieveAPIView): # Purpose: Retrieve a single book by ID.
     queryset = Book.objects.all()
@@ -23,11 +24,11 @@ class BookCreateView(generics.CreateAPIView): #  Purpose: Allow authenticated us
 class BookUpdateView(generics.UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    lookup_field = 'pk'
+    permission_classes = [IsAuthenticated]
+    
 
 class BookDeleteView(generics.DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [permissions.IsAuthenticated]
-    lookup_field = 'pk'
+    
