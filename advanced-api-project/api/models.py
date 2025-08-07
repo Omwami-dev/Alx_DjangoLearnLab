@@ -3,7 +3,7 @@ from django.db import models
 class author(models.model):
     name = models.CharField(max_length=200)
 
-    def __str__(self)
+    def __str__(self):
         return self.name
     
 
