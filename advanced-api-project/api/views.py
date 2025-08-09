@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly , IsAuthenticat
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.generics import RetrieveAPIView
 from django_filters.rest_framework import DjangoFilterBackend
-from .filters import BookFilter
+from django_filters import rest_framework as filters
 
 # GET: List all books
 class BookListView(generics.ListAPIView):
