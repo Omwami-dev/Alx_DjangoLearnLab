@@ -124,9 +124,8 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "blog", "static")]
 
 TEMPLATES = [
     {
-        ...
+        
         'DIRS': [os.path.join(BASE_DIR, "blog", "templates")],
-        ...
     },
 ]
 
