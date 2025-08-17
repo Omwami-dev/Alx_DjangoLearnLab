@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.conf import settings
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
@@ -11,6 +12,14 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+    
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    bio = models.TextField(blank=True)
+    profile_photo = models.ImageField(upload_to='profiles/', blank=True, null=True)
+    
+    def __str__(self):
+        return f"{self.user.username}'s profile"
     
 def avatar_upload_path(instance, filename):
     return f'avatars/user_{instance.user.id}/{filename}'
