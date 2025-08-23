@@ -42,6 +42,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post
+from django.urls import reverse, reverse_lazy
 
 # List all posts
 class PostListView(ListView):
@@ -134,3 +135,19 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.author
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from .forms import ProfileUpdateForm
+
+@login_required
+def profile_update(request):
+    profile = request.user.profile
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # Replace with your profile view URL name
+    else:
+        form = ProfileUpdateForm(instance=profile)
+    return render(request, 'users/profile_update.html', {'form': form})
+
