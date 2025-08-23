@@ -30,11 +30,10 @@ class Comment(models.Model):
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     bio = models.TextField(blank=True)
-    profile_photo = models.ImageField(upload_to='profiles/', blank=True, null=True)
+    profile_photo = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
     
     def __str__(self):
-        return f"{self.user.username}'s profile"
-    
+        return f'{self.user.username} Profile'
 def avatar_upload_path(instance, filename):
     return f'avatars/user_{instance.user.id}/{filename}'
 
