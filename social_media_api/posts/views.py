@@ -1,9 +1,12 @@
 from django.shortcuts import render
-from rest_framework import viewsets, permissions, filters
+from rest_framework import viewsets, permissions, filters, status
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.pagination import PageNumberPagination
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from .serializers import UserSerializer
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
@@ -51,4 +54,18 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
+    def feed(self, request):
+        user = request.user
+        posts = Post.objects.filter(Q(author__in=user.following.all()) | Q(author=user)).order_by('-created_at')
+        serializer = self.get_serializer(posts, many=True)
+        return Response(serializer.data)
