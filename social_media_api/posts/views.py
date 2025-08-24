@@ -69,3 +69,33 @@ class PostViewSet(viewsets.ModelViewSet):
         posts = Post.objects.filter(Q(author__in=user.following.all()) | Q(author=user)).order_by('-created_at')
         serializer = self.get_serializer(posts, many=True)
         return Response(serializer.data)
+from rest_framework import generics, permissions
+from rest_framework.response import Response
+from .models import Post
+from .serializers import PostSerializer
+
+class FeedView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        # Get all users the current user is following
+        following_users = request.user.following.all()
+        
+        # Fetch posts authored by followed users, most recent first
+        posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
+        
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
+class FeedView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        # Get the list of users the current user is following
+        following_users = request.user.following.all()
+
+        # Fetch posts by those users, most recent first
+        posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
+
+        # Serialize and return posts
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data)
