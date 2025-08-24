@@ -23,7 +23,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             email=validated_data.get('email'),
             password=validated_data['password']
         )
-        Token.objects.create(user=user)  # Automatically create token
+        Token.objects.create(user=user)  # Create token at registration
         return user
 
 
@@ -37,4 +37,5 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Invalid credentials")
         data['user'] = user
         return data
+
 
