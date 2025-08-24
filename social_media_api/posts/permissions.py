@@ -12,3 +12,14 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return True
         # Write permissions only for owner
         return getattr(obj, 'author', None) == request.user
+
+class IsOwnerOrReadOnly(permissions.BasePermission):
+    """
+    Custom permission to only allow owners of an object to edit or delete it.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        # SAFE_METHODS are GET, HEAD, OPTIONS (read-only access)
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return obj.author == request.user
